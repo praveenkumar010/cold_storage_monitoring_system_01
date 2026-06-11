@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - Cold Storage Monitoring</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="auth-body">
+
+<div class="auth-wrapper">
+
+    <div class="auth-brand-panel">
+        <div class="brand-logo">CS</div>
+        <h1>Create Your Account</h1>
+        <p>
+            Register as a user. Admin can assign warehouses after registration.
+        </p>
+
+        <div class="feature-list">
+            <div class="feature-item">Register User Account</div>
+            <div class="feature-item">Admin Assigns Warehouse</div>
+            <div class="feature-item">Create Storage Units</div>
+            <div class="feature-item">Add Sensors</div>
+        </div>
+    </div>
+
+    <div class="auth-card">
+        <div class="auth-card-header">
+            <h2>User Registration</h2>
+            <p>Create an account and login after registration.</p>
+        </div>
+
+        {% if error %}
+            <div class="error-box">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" action="/register">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Choose username" required>
+
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Choose password" required>
+
+            <button type="submit" class="auth-btn">Register</button>
+        </form>
+
+        <div class="auth-bottom-link">
+            <span>Already registered?</span>
+            <a href="/login">Login here</a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
