@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - Cold Storage Monitoring</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="auth-body">
+
+<div class="auth-wrapper">
+
+    <div class="auth-brand-panel">
+
+    <div class="brand-logo">CS</div>
+
+    <h1>Create Your Account</h1>
+
+    <p>
+        Join the monitoring platform and manage
+        warehouses, storage units and alerts.
+    </p>
+
+    <div class="preview-grid">
+
+        <div class="preview-stat-card">
+            <span>🔐</span>
+            <h3>Secure Access</h3>
+        </div>
+
+        <div class="preview-stat-card">
+            <span>🏢</span>
+            <h3>Warehouse Control</h3>
+        </div>
+
+        <div class="preview-stat-card">
+            <span>📊</span>
+            <h3>Analytics</h3>
+        </div>
+
+        <div class="preview-stat-card">
+            <span>🚨</span>
+            <h3>Alert Tracking</h3>
+        </div>
+
+    </div>
+
+</div>
+
+    <div class="auth-card">
+        <div class="auth-card-header">
+            <h2>User Registration</h2>
+            <p>Create an account and login after registration.</p>
+        </div>
+
+        {% if error %}
+            <div class="error-box">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" action="/register">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Choose username" required>
+
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Choose password" required>
+
+            <button type="submit" class="auth-btn">Register</button>
+        </form>
+
+        <div class="auth-bottom-link">
+            <span>Already registered?</span>
+            <a href="/login">Login here</a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

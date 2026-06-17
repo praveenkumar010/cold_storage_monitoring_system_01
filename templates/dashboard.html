@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cold Storage Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="top-header">
+    <div class="header-left">
+        <div class="mini-logo">CS</div>
+        <div>
+            <h1>Cold Storage Monitoring Dashboard</h1>
+            <p>
+                Logged in as <strong>{{ current_user.username }}</strong>
+                |
+                Role: <strong>{{ current_user.role }}</strong>
+            </p>
+        </div>
+    </div>
+
+    <a href="/logout" class="logout-btn">Logout</a>
+</header>
+
+<main class="container">
+
+    <!-- SUMMARY -->
+    <section class="summary-grid">
+        <div class="summary-card">
+            <span class="summary-icon">🏢</span>
+            <div>
+                <h3>Warehouse Count</h3>
+                <p>{{ warehouse_count }}</p>
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <span class="summary-icon">🚨</span>
+            <div>
+                <h3>Total Alerts</h3>
+                <p>{{ total_alerts }}</p>
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <span class="summary-icon">⏳</span>
+            <div>
+                <h3>Active Alerts</h3>
+                <p>{{ active_count }}</p>
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <span class="summary-icon">✅</span>
+            <div>
+                <h3>Solved Alerts</h3>
+                <p>{{ resolved_count }}</p>
+            </div>
+        </div>
+    </section>
+
+    {% if current_user.role == "admin" %}
+    <!-- ADMIN ROW: side-by-side -->
+    <section class="admin-grid-layout">
+
+        <!-- ADMIN CONTROLS -->
+        <section class="panel admin-mini-panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Admin Controls</h2>
+                    <p>Create and assign warehouse to a registered user.</p>
+                </div>
+            </div>
+
+            <div class="form-card admin-form-card">
+                <div class="form-title-row">
+                    <h3>Create & Assign Warehouse</h3>
+                    <span>Admin</span>
+                </div>
+
+                <form method="post" action="/ui/admin/warehouses/create">
+                    <label for="owner_id">Select User</label>
+                    <select id="owner_id" name="owner_id" required>
+                        {% if users %}
+                            {% for user in users %}
+                                {% if user.role != "admin" %}
+                                    <option value="{{ user.id }}">
+                                        {{ user.username }} | User ID: {{ user.id }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <option value="">No users found</option>
+                        {% endif %}
+                    </select>
+
+                    <label for="warehouse_name">Warehouse Name</label>
+                    <input
+                        id="warehouse_name"
+                        type="text"
+                        name="name"
+                        placeholder="Example: Apollo Warehouse"
+                        required
+                    >
+
+                    <label for="warehouse_location">Location</label>
+                    <input
+                        id="warehouse_location"
+                        type="text"
+                        name="location"
+                        placeholder="Example: Hyderabad"
+                        required
+                    >
+
+                    <button type="submit" class="primary-btn full-width-btn">
+                        Create & Assign Warehouse
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- REGISTERED USERS -->
+        <section class="panel admin-mini-panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Registered Users</h2>
+                    <p>Users registered in the application.</p>
+                </div>
+            </div>
+
+            <div class="scroll-area admin-scroll-area">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if users %}
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td><span class="badge">{{ user.role }}</span></td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">No registered users found.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- WAREHOUSE LIST -->
+        <section class="panel admin-mini-panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Warehouse List</h2>
+                    <p>Admin can delete warehouses.</p>
+                </div>
+            </div>
+
+            <div class="scroll-area admin-scroll-area">
+                <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Owner</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% if warehouses %}
+                        {% for warehouse in warehouses %}
+                        <tr>
+                            <td>{{ warehouse.id }}</td>
+                            <td>{{ warehouse.name }}</td>
+                            <td>{{ warehouse.location }}</td>
+                            <td>
+                                {% if warehouse.owner_id %}
+                                    {{ user_lookup.get(warehouse.owner_id, "Unknown User") }}
+                                {% else %}
+                                    Unassigned
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form method="post" action="/ui/admin/warehouses/{{ warehouse.id }}/delete">
+                                    <button type="submit" class="delete-btn">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No warehouses available.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+            </div>
+        </section>
+
+    </section>
+    {% endif %}
+
+    {% if current_user.role != "admin" %}
+    <!-- USER MASTER DATA -->
+    <section class="panel">
+        <div class="panel-heading">
+            <div>
+                <h2>Your Data</h2>
+                <p>These warehouses, storage units and sensors belong to you.</p>
+            </div>
+        </div>
+
+        <div class="master-row">
+
+            <!-- WAREHOUSES -->
+            <div class="master-box">
+                <div class="master-box-header">
+                    <h3>Warehouses</h3>
+                    <span>{{ warehouse_count }}</span>
+                </div>
+
+                <div class="master-box-body">
+                    {% if warehouses %}
+                        {% for warehouse in warehouses %}
+                        <div class="data-card">
+                            <h4>{{ warehouse.name }}</h4>
+                            <p><strong>ID:</strong> {{ warehouse.id }}</p>
+                            <p><strong>Location:</strong> {{ warehouse.location }}</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="empty">No warehouses assigned.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- STORAGE UNITS -->
+            <div class="master-box">
+                <div class="master-box-header">
+                    <h3>Storage Units</h3>
+                    <span>{{ storage_unit_count }}</span>
+                </div>
+
+                <div class="master-box-body">
+                    {% if storage_units %}
+                        {% for unit in storage_units %}
+                        <div class="data-card">
+                            <h4>{{ unit.name }}</h4>
+                            <p><strong>ID:</strong> {{ unit.id }}</p>
+                            <p><strong>Type:</strong> {{ unit.unit_type }}</p>
+                            <p><strong>Warehouse ID:</strong> {{ unit.warehouse_id }}</p>
+
+                            <form method="post" action="/ui/storage-units/{{ unit.id }}/delete">
+                                <button type="submit" class="delete-btn">Delete Storage Unit</button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="empty">No storage units found.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- SENSORS -->
+            <div class="master-box">
+                <div class="master-box-header">
+                    <h3>Sensors</h3>
+                    <span>{{ sensor_count }}</span>
+                </div>
+
+                <div class="master-box-body">
+                    {% if sensors %}
+                        {% for sensor in sensors %}
+                        <div class="data-card">
+                            <h4>
+                                {% if sensor.sensor_type == "door_open" %}
+                                    Door Status
+                                {% else %}
+                                    {{ sensor.sensor_type }}
+                                {% endif %}
+                            </h4>
+                            <p><strong>ID:</strong> {{ sensor.id }}</p>
+                            <p><strong>Storage Unit ID:</strong> {{ sensor.storage_unit_id }}</p>
+                            <p><strong>Status:</strong> {{ sensor.status }}</p>
+
+                            <form method="post" action="/ui/sensors/{{ sensor.id }}/delete">
+                                <button type="submit" class="delete-btn">Delete Sensor</button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="empty">No sensors found.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- USER CONTROLS -->
+    <section class="panel">
+        <div class="panel-heading">
+            <div>
+                <h2>User Controls</h2>
+                <p>Create storage units. Temperature, humidity and door status sensors are added automatically.</p>
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-card">
+                <div class="form-title-row">
+                    <h3>Create Storage Unit</h3>
+                    <span>User</span>
+                </div>
+
+                <form method="post" action="/ui/storage-units/create">
+                    <label for="warehouse_id">Select Warehouse</label>
+                    <select id="warehouse_id" name="warehouse_id" required>
+                        {% if warehouses %}
+                            {% for warehouse in warehouses %}
+                                <option value="{{ warehouse.id }}">
+                                    {{ warehouse.name }} - {{ warehouse.location }}
+                                </option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="">No warehouse assigned</option>
+                        {% endif %}
+                    </select>
+
+                    <label for="storage_unit_name">Storage Unit Name</label>
+                    <input
+                        id="storage_unit_name"
+                        type="text"
+                        name="name"
+                        placeholder="Example: Freezer Unit A"
+                        required
+                    >
+
+                    <label for="unit_type">Unit Type</label>
+                    <input
+                        id="unit_type"
+                        type="text"
+                        name="unit_type"
+                        placeholder="Example: Freezer / Cold Room"
+                        required
+                    >
+
+                    <button type="submit" class="primary-btn full-width-btn">
+                        Create Storage Unit
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- CHARTS -->
+    <section class="wide-row">
+
+        <div class="panel fixed-panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Alert Type Distribution</h2>
+                    <p>Only temperature, humidity and door-open alerts are shown.</p>
+                </div>
+            </div>
+
+<div class="alert-kpi-grid">
+    <div class="alert-kpi temp">
+        <div class="alert-icon">❄️</div>
+        <div>
+            <h3>Temperature Alerts</h3>
+            <p>{{ alert_type_chart.temperature }}</p>
+        </div>
+    </div>
+
+    <div class="alert-kpi humidity">
+        <div class="alert-icon">💧</div>
+        <div>
+            <h3>Humidity Alerts</h3>
+            <p>{{ alert_type_chart.humidity }}</p>
+        </div>
+    </div>
+
+    <div class="alert-kpi door">
+        <div class="alert-icon">🚪</div>
+        <div>
+            <h3>Door Open Alerts</h3>
+            <p>{{ alert_type_chart.door }}</p>
+        </div>
+    </div>
+</div>
+        </div>
+
+        <div class="panel fixed-panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Alerts Per Storage Unit</h2>
+                    <p>Bar graph based on temperature, humidity and door-open alerts.</p>
+                </div>
+            </div>
+
+            <div class="scroll-area">
+                {% if storage_unit_alert_chart %}
+                    {% for item in storage_unit_alert_chart %}
+                    <div class="bar-row">
+                        <span>{{ item.storage_unit }}</span>
+                        <div class="bar-track">
+                            <div class="bar-fill" data-width="{{ item.width }}">
+                                {{ item.count }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="empty">No storage unit alert data available.</p>
+                {% endif %}
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ALERTS TABLE -->
+    <section class="panel fixed-panel single-wide-panel">
+        <div class="panel-heading">
+            <div>
+                <h2>Alerts Data</h2>
+                <p>
+                    {% if current_user.role == "admin" %}
+                        Admin can only view alerts.
+                    {% else %}
+                        You can resolve only your own alerts.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="scroll-area">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Warehouse</th>
+                        <th>Storage Unit</th>
+                        <th>Sensor</th>
+                        <th>Message</th>
+                        <th>Severity</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        {% if current_user.role != "admin" %}
+                        <th>Action</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% if alerts %}
+                        {% for alert in alerts %}
+                        <tr>
+                            <td>{{ alert.id }}</td>
+                            <td>{{ alert.warehouse_name }}</td>
+                            <td>{{ alert.storage_unit_name }}</td>
+                            <td>{{ alert.sensor_name }}</td>
+                            <td>{{ alert.message }}</td>
+                            <td><span class="badge">{{ alert.severity }}</span></td>
+                            <td>
+                                {% if alert.is_resolved %}
+                                    <span class="badge solved">Solved</span>
+                                {% else %}
+                                    <span class="badge not-solved">Not Solved</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ alert.created_at }}</td>
+
+                            {% if current_user.role != "admin" %}
+                            <td>
+                                {% if not alert.is_resolved %}
+                                <form method="post" action="/ui/alerts/{{ alert.id }}/resolve">
+                                    <button type="submit" class="resolve-btn">Mark Solved</button>
+                                </form>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            {% if current_user.role == "admin" %}
+                                <td colspan="8">No alerts available.</td>
+                            {% else %}
+                                <td colspan="9">No alerts available.</td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer">
+    <p>Cold Storage Monitoring System </p>
+</footer>
+
+<script>
+    document.querySelectorAll(".pie-chart").forEach(function(chart) {
+        const bg = chart.getAttribute("data-bg");
+        if (bg) {
+            chart.style.background = bg;
+        }
+    });
+
+    document.querySelectorAll(".bar-fill").forEach(function(bar) {
+        const width = bar.getAttribute("data-width");
+        if (width) {
+            bar.style.width = width + "%";
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Cold Storage Monitoring</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="auth-body">
+
+<div class="auth-wrapper">
+
+    <div class="auth-brand-panel">
+
+    <div class="brand-logo">CS</div>
+
+    <h1>Cold Storage Monitoring</h1>
+
+    <p>
+        Real-time monitoring platform for warehouses,
+        storage units, sensors and alerts.
+    </p>
+
+    <div class="preview-grid">
+
+        <div class="preview-stat-card">
+            <span>🏢</span>
+            <h3>Warehouses</h3>
+            <strong>24</strong>
+        </div>
+
+        <div class="preview-stat-card">
+            <span>📦</span>
+            <h3>Storage Units</h3>
+            <strong>68</strong>
+        </div>
+
+        <div class="preview-stat-card">
+            <span>🌡️</span>
+            <h3>Sensors</h3>
+            <strong>204</strong>
+        </div>
+
+        <div class="preview-stat-card">
+            <span>🚨</span>
+            <h3>Alerts</h3>
+            <strong>12</strong>
+        </div>
+
+    </div>
+
+    
+
+</div>
+
+    <div class="auth-card">
+        <div class="auth-card-header">
+            <h2>Welcome Back</h2>
+            <p>Login to continue to your dashboard.</p>
+        </div>
+
+        {% if error %}
+            <div class="error-box">{{ error }}</div>
+        {% endif %}
+        
+        {% if registered %}
+            <div class="success-box">
+                ✅ Registration successful! Please login.
+            </div>
+        {% endif %}
+
+        <form method="post" action="/login">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Enter username" required>
+
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter password" required>
+
+            <button type="submit" class="auth-btn">Login</button>
+        </form>
+
+        <div class="auth-bottom-link">
+            <span>New user?</span>
+            <a href="/register">Create an account</a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
