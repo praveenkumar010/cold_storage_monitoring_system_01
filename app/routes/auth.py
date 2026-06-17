@@ -40,7 +40,11 @@ def is_valid_password(password: str) -> bool:
 # LOGIN PAGE (GET)
 # ======================================================
 @router.get("/login")
+<<<<<<< HEAD
 def login_page(request: Request,registered: int = 0):
+=======
+def login_page(request: Request):
+>>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
     """
     Shows login HTML page
     """
@@ -49,8 +53,12 @@ def login_page(request: Request,registered: int = 0):
         name="login.html",
         context={
             "request": request,
+<<<<<<< HEAD
             "error": None,
             "registered": registered
+=======
+            "error": None
+>>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
         }
     )
 
@@ -179,7 +187,11 @@ def register_user(
     db.refresh(user)
 
     # ✅ Step 5: Redirect to login
+<<<<<<< HEAD
     return RedirectResponse(url="/login?registered=1", status_code=303)
+=======
+    return RedirectResponse(url="/login", status_code=303)
+>>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
 
 
 # ======================================================
