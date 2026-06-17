@@ -259,7 +259,6 @@ def dashboard(
         all_storage_units = db.query(StorageUnit).order_by(StorageUnit.id.desc()).all()
 
         alerts = db.query(Alert).order_by(Alert.created_at.desc()).all()
-<<<<<<< HEAD
         all_sensors = db.query(Sensor).all()
 
         sensor_lookup = {
@@ -314,8 +313,7 @@ def dashboard(
                 alert.sensor_name = "Unknown"
                 alert.storage_unit_name = "Unknown"
                 alert.warehouse_name = "Unknown"
-=======
->>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
+
         alert_logs = db.query(AlertLog).order_by(AlertLog.created_at.desc()).all()
 
         active_alerts = [alert for alert in alerts if not alert.is_resolved]
@@ -387,8 +385,6 @@ def dashboard(
     active_alerts = [alert for alert in alerts if not alert.is_resolved]
     resolved_alerts = [alert for alert in alerts if alert.is_resolved]
     high_alerts = [alert for alert in alerts if alert.severity == "high"]
-
-<<<<<<< HEAD
     sensor_lookup = {
         sensor.id: sensor
         for sensor in sensors
@@ -432,8 +428,7 @@ def dashboard(
             alert.storage_unit_name = "Unknown"
             alert.warehouse_name = "Unknown"
 
-=======
->>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
+
     context = {
         "request": request,
         "current_user": current_user,

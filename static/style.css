@@ -10,7 +10,7 @@ Inspired by a soft cleanwave aesthetic, adapted for:
    1. DESIGN TOKENS
 ===================================================== */
 
-<<<<<<< HEAD
+
 :root{
 
     /* Backgrounds */
@@ -57,48 +57,7 @@ Inspired by a soft cleanwave aesthetic, adapted for:
     --gray-2:#94A3B8;
     --gray-3:#CBD5E1;
 }
-=======
-:root {
-    --bg: #E8F4F2;
-    --bg-alt: #DFF0EE;
-    --surface: #F4FAFA;
-    --surface-2: #FFFFFF;
 
-    --accent: #1A7A6E;
-    --accent-mid: #2A9D8F;
-    --accent-light: #5BBFB5;
-
-    --accent-ghost: rgba(26, 122, 110, 0.08);
-    --accent-border: rgba(26, 122, 110, 0.18);
-
-    --text-1: #0D1E1C;
-    --text-2: #3A5C58;
-    --text-3: #6B8C88;
-
-    --border: rgba(13, 30, 28, 0.08);
-    --border-strong: rgba(13, 30, 28, 0.16);
-
-    --shadow-sm: 0 2px 12px rgba(13, 30, 28, 0.06);
-    --shadow-md: 0 8px 24px rgba(13, 30, 28, 0.08);
-    --shadow-lg: 0 18px 42px rgba(13, 30, 28, 0.12);
-
-    --radius-sm: 10px;
-    --radius-md: 16px;
-    --radius-lg: 24px;
-
-    --danger: #B91C1C;
-    --danger-dark: #991B1B;
-
-    --success: #0D8F69;
-    --warning: #B45309;
-
-    --black: #111111;
-    --gray-1: #555555;
-    --gray-2: #999999;
-    --gray-3: #CCCCCC;
-}
-
->>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
 /* =====================================================
    2. RESET
 ===================================================== */
@@ -113,7 +72,7 @@ html {
     scroll-behavior: smooth;
 }
 
-<<<<<<< HEAD
+
 body{
     margin:0;
     font-family:'Segoe UI',sans-serif;
@@ -131,18 +90,7 @@ body{
     var(--bg);
 
     overflow-x:hidden;
-=======
-body {
-    margin: 0;
-    font-family: Canter;
-    color: var(--text-1);
-    background:
-        radial-gradient(circle at top left, rgba(26, 122, 110, 0.07), transparent 20%),
-        radial-gradient(circle at bottom right, rgba(91, 191, 181, 0.08), transparent 24%),
-        var(--bg);
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
->>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
+
 }
 
 
@@ -214,10 +162,8 @@ body::before {
     justify-content: center;
     position: relative;
     overflow: hidden;
-<<<<<<< HEAD
     flex: 1.2;
-=======
->>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
+
 }
 
 .auth-brand-panel::before,
@@ -300,10 +246,8 @@ body::before {
     display: flex;
     flex-direction: column;
     justify-content: center;
-<<<<<<< HEAD
     flex: 0.8;
-=======
->>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
+
 }
 
 .auth-card-header h2 {
@@ -411,7 +355,7 @@ body::before {
    4. HEADER / CONTAINER
 ===================================================== */
 
-<<<<<<< HEAD
+
 .top-header{
     position:sticky;
     top:0;
@@ -436,22 +380,7 @@ body::before {
 
     box-shadow:
     0 10px 30px rgba(15,23,42,.18);
-=======
-.top-header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background:
-        linear-gradient(135deg, rgba(13,30,28,0.97), rgba(26,122,110,0.90));
-    color: #ffffff;
-    min-height: 86px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 30px;
-    box-shadow: 0 8px 32px rgba(13, 30, 28, 0.18);
-    backdrop-filter: blur(12px);
->>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
+
 }
 
 .header-left {
@@ -520,7 +449,7 @@ body::before {
     margin-bottom: 22px;
 }
 
-<<<<<<< HEAD
+
 .summary-card{
     background:white;
     border:none;
@@ -543,7 +472,8 @@ body::before {
     #7C3AED,
     #EC4899
     );
-=======
+}
+
 .summary-card {
     background: linear-gradient(180deg, #FFFFFF, #F9FDFC);
     border: 1px solid var(--border);
@@ -565,7 +495,7 @@ body::before {
     width: 100%;
     height: 4px;
     background: linear-gradient(90deg, var(--accent), var(--accent-light));
->>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
+
 }
 
 .summary-icon {
@@ -601,7 +531,7 @@ body::before {
    6. PANELS
 ===================================================== */
 
-<<<<<<< HEAD
+
 .panel{
     background:white;
 
@@ -615,16 +545,7 @@ body::before {
     0 10px 25px rgba(15,23,42,.06);
 
     margin-bottom:24px;
-=======
-.panel {
-    background: rgba(255,255,255,0.86);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 18px;
-    box-shadow: var(--shadow-sm);
-    margin-bottom: 22px;
->>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
+
 }
 
 .panel-heading {
@@ -1387,7 +1308,6 @@ tbody tr:hover td {
   overflow-x: hidden;
   border-radius: 14px;
 }
-<<<<<<< HEAD
 
 .summary-card:nth-child(1) .summary-icon{
     background:#2563EB;
@@ -1728,5 +1648,3 @@ select:focus{
         transform:translateY(0);
     }
 }
-=======
->>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990

@@ -376,7 +376,7 @@
                 </div>
             </div>
 
-<<<<<<< HEAD
+
 <div class="alert-kpi-grid">
     <div class="alert-kpi temp">
         <div class="alert-icon">❄️</div>
@@ -402,17 +402,7 @@
         </div>
     </div>
 </div>
-=======
-            <div class="pie-wrapper">
-                <div class="pie-chart" data-bg="{{ alert_type_chart.pie_gradient }}"></div>
 
-                <div class="legend">
-                    <p><span class="legend-box black"></span> Temperature: {{ alert_type_chart.temperature }}</p>
-                    <p><span class="legend-box gray1"></span> Humidity: {{ alert_type_chart.humidity }}</p>
-                    <p><span class="legend-box gray2"></span> Door Open: {{ alert_type_chart.door }}</p>
-                </div>
-            </div>
->>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
         </div>
 
         <div class="panel fixed-panel">
@@ -463,13 +453,10 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-<<<<<<< HEAD
                         <th>Warehouse</th>
                         <th>Storage Unit</th>
                         <th>Sensor</th>
-=======
-                        <th>Sensor ID</th>
->>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
+
                         <th>Message</th>
                         <th>Severity</th>
                         <th>Status</th>
@@ -485,13 +472,10 @@
                         {% for alert in alerts %}
                         <tr>
                             <td>{{ alert.id }}</td>
-<<<<<<< HEAD
                             <td>{{ alert.warehouse_name }}</td>
                             <td>{{ alert.storage_unit_name }}</td>
                             <td>{{ alert.sensor_name }}</td>
-=======
-                            <td>{{ alert.sensor_id }}</td>
->>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
+
                             <td>{{ alert.message }}</td>
                             <td><span class="badge">{{ alert.severity }}</span></td>
                             <td>
@@ -519,15 +503,11 @@
                     {% else %}
                         <tr>
                             {% if current_user.role == "admin" %}
-<<<<<<< HEAD
+
                                 <td colspan="8">No alerts available.</td>
                             {% else %}
                                 <td colspan="9">No alerts available.</td>
-=======
-                                <td colspan="6">No alerts available.</td>
-                            {% else %}
-                                <td colspan="7">No alerts available.</td>
->>>>>>> 3f520bf8a46d120c73bdcb525ad2cfdfc93d9990
+
                             {% endif %}
                         </tr>
                     {% endif %}
